@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["viewer","editor","admin"],
         default: "editor"
+    },
+    refreshToken : {
+        type: String
     }
 },{timestamps:true})
 
