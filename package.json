@@ -2,8 +2,10 @@
   "name": "syncpad",
   "version": "1.0.0",
   "description": "A real time collaboration and file sharing platform",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "dev" : "nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,5 +24,13 @@
   "bugs": {
     "url": "https://github.com/AgniAditya/SyncPad/issues"
   },
-  "homepage": "https://github.com/AgniAditya/SyncPad#readme"
+  "homepage": "https://github.com/AgniAditya/SyncPad#readme",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
