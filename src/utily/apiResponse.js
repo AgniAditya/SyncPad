@@ -4,7 +4,6 @@ class ApiResponse {
         data,
         message = "success"
     ){
-        super(message)
         this.message = message
         this.data = data
         this.statusCode = statusCode
