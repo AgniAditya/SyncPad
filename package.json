@@ -1,0 +1,26 @@
+{
+  "name": "syncpad",
+  "version": "1.0.0",
+  "description": "A real time collaboration and file sharing platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgniAditya/SyncPad.git"
+  },
+  "keywords": [
+    "Real_time",
+    "Collaborative",
+    "file_share",
+    "chat_room",
+    "file_editing"
+  ],
+  "author": "Aditya Agnihotri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AgniAditya/SyncPad/issues"
+  },
+  "homepage": "https://github.com/AgniAditya/SyncPad#readme"
+}
