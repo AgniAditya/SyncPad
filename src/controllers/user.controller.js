@@ -1,31 +1,14 @@
-import { User } from "../models/user.model.js"
 import { asyncHandler } from '../utily/asyncHandler.js'
 import { ApiError } from "../utily/apirError.js"
 import { ApiResponse } from "../utily/apiResponse.js"
-import validator from 'validator'
+import { login, registerNewUser } from '../services/user.service.js'
 
 const registerUser = asyncHandler( async (req,res) => {
     try {
         const { username , email , password } = req.body
-        if( !(username || email || password) ) throw new ApiError(404,"not enough data to register user");
+        if( !(username && email && password) ) throw new ApiError(404,"not enough data to register user");
     
-        const existedUser = await User.findOne({
-            $or: [{username} , {email}]
-        })
-        if(existedUser) throw new ApiError(400,"user already register");
-        if(username.trim() === '' || password.trim() === '') throw new ApiError(400,"invalid username or password");
-        if(!validator.isEmail(email)) throw new ApiError(400,"invalid email");
-    
-        const user = await User.create({
-            username: username,
-            email: email,
-            password: password
-        })
-    
-        const createdUser = await User.findById(user._id).select(
-            "-password -refreshToken"
-        )
-        if(!createdUser) throw new ApiError(500,"Server is not successfull to register user");
+        const createdUser = await registerNewUser(username,email,password)
     
         return res.status(200)
         .json(new ApiResponse(
@@ -39,7 +22,30 @@ const registerUser = asyncHandler( async (req,res) => {
 })
 
 const loginUser = asyncHandler( async (req,res) => {
+    try {
+        const { username , email , password } = req.body
+        if(!(username || email)) throw new ApiError(404,"credentials not found");
+        if(!password) throw new ApiError(404,"password is required");
     
+        const credential = username ? username : email
+        const { loggedInUser , accessToken , refreshToken } = await login(credential,password)
+
+        const options = {
+            httpOnly : true,
+            secure : true
+        }
+
+        return res.status(200)
+        .cookie("accessToken",accessToken,options)
+        .cookie("refreshToken",refreshToken,options)
+        .json(new ApiResponse(
+            200,
+            loggedInUser,
+            "user loggeIn successfully"
+        ))
+    } catch (error) {
+        throw new ApiError(500,error.message || "Failed to login user");
+    }
 })
 
 const logoutUser = asyncHandler( async (req,res) => {
