@@ -20,7 +20,7 @@ const setUpSocketIO = () => {
     })
     
     server.on("error", (error) => {
-        console.log("App not able to connect with database",error);
+        console.log("Socket server not able to connect",error);
         throw error;
     })
     
