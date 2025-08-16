@@ -1,17 +1,24 @@
 import { ConnectDB } from "./config/db.config.js";
-import {PORT} from "./config/env.config.js"
-import { server } from "./socketserver.js";
+import {HTTP_PORT} from "./config/env.config.js"
+import { app } from "./app.js";
+import { setUpSocketIO } from "./socketserver.js";
 
-ConnectDB()
+await ConnectDB()
 .then( () => {
-    server.on("error", (error) => {
+    app.on("error", (error) => {
         console.log("App not able to connect with database",error);
         throw error;
     })
-    server.listen(PORT,() => {
-        console.log(`Server is running at -> http://localhost:${PORT}`);
+    app.listen(HTTP_PORT,() => {
+        console.log(`HTTP Server is running at -> http://localhost:${HTTP_PORT}`);
     })
 })
 .catch((err) => {
     console.log("MongoDB connection FAILED !!",err)
 })
+
+try {
+  setUpSocketIO()
+} catch (err) {
+  console.log("Socket connection FAILED !!", err)
+}
