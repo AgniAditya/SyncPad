@@ -1,14 +1,14 @@
 import { ConnectDB } from "./config/db.config.js";
-import { app } from "./app.js";
 import {PORT} from "./config/env.config.js"
+import { server } from "./socketserver.js";
 
 ConnectDB()
 .then( () => {
-    app.on("error", (error) => {
+    server.on("error", (error) => {
         console.log("App not able to connect with database",error);
         throw error;
     })
-    app.listen(PORT,() => {
+    server.listen(PORT,() => {
         console.log(`Server is running at -> http://localhost:${PORT}`);
     })
 })
