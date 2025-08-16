@@ -1,6 +1,6 @@
-import { asyncHandler } from '../utily/asyncHandler.js'
-import { ApiError } from "../utily/apirError.js"
-import { ApiResponse } from "../utily/apiResponse.js"
+import { asyncHandler } from '../utils/asyncHandler.js'
+import { ApiError } from "../utils/apirError.js"
+import { ApiResponse } from "../utils/apiResponse.js"
 import { login, logout, registerNewUser } from '../services/user.service.js'
 import { User } from '../models/user.model.js'
 

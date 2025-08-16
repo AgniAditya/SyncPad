@@ -1,6 +1,6 @@
 import { User } from "../models/user.model.js"
 import validator from 'validator'
-import { ApiError } from "../utily/apirError.js";
+import { ApiError } from "../utils/apirError.js";
 
 const generateAccessAndRefreshTokens = async(userId) => {
     try{
