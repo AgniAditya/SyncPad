@@ -59,7 +59,22 @@ const login = async (credential,password) => {
     return { loggedInUser , accessToken , refreshToken }
 }
 
+const logout = async (userId) => {
+    await User.findByIdAndUpdate(
+        userId,
+        {
+            $unset: {
+                refreshToken: 1
+            }
+        },
+        {
+            new: true
+        }
+    )
+}
+
 export {
     registerNewUser,
-    login
+    login,
+    logout
 }

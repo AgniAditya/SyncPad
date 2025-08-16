@@ -1,7 +1,8 @@
 import { asyncHandler } from '../utily/asyncHandler.js'
 import { ApiError } from "../utily/apirError.js"
 import { ApiResponse } from "../utily/apiResponse.js"
-import { login, registerNewUser } from '../services/user.service.js'
+import { login, logout, registerNewUser } from '../services/user.service.js'
+import { User } from '../models/user.model.js'
 
 const registerUser = asyncHandler( async (req,res) => {
     try {
@@ -49,7 +50,28 @@ const loginUser = asyncHandler( async (req,res) => {
 })
 
 const logoutUser = asyncHandler( async (req,res) => {
-    
+    try {
+        const userId = req.user?.id;
+        if(!userId) throw new ApiError(404,"user id not found");
+
+        await logout(userId);
+
+        const options = {
+            httpOnly: true,
+            secure: true
+        }
+
+        return res.status(200)
+        .clearCookie("accessToken",options)
+        .clearCookie("refreshToken",options)
+        .json(new ApiResponse(
+            200,
+            {},
+            "user loggedOut successfully"
+        ))
+    } catch (error) {
+        throw new ApiError(404,"invalid user id");
+    }
 })
 
 export {
