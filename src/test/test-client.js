@@ -1,14 +1,14 @@
 import { io } from "socket.io-client"
 
-const socket = io("http://localhost:8000")
+const socket = io(`http://localhost:8001`)
 
 socket.on("connect", () => {
   console.log("Connected to server:", socket.id);
 
   // Send test event
-  socket.emit("test-event", { message: "Hello from client!" });
+  socket.emit("chat-message", { message: "Hey Aditya" });
 });
 
-socket.on("server-response", (data) => {
+socket.on("chat-message-response", (data) => {
   console.log("📩 Received from server:", data);
 });

@@ -1,25 +1,32 @@
 import { Server } from "socket.io";
 import http from 'http'
 import { app } from "./app.js";
-import { CORS_ORIGIN } from "./config/env.config.js";
+import { CORS_ORIGIN, SOCKET_PORT } from "./config/env.config.js";
+import { handleChatEvents } from "./socket/chat.socket.js";
 
-const server = http.createServer(app)
-const io = new Server(server,{
-    cors: {
-        origin: CORS_ORIGIN,
-        methods: ["GET","POST"]
-    }
-})
+const setUpSocketIO = () => {
+    const server = http.createServer(app)
+    const io = new Server(server,{
+        cors: {
+            origin: CORS_ORIGIN,
+            methods: ["GET","POST"]
+        }
+    })
+    
+    io.on('connection',(socket) => {
+        console.log("A user connected:", socket.id);
+    
+        handleChatEvents(socket,io)
+    })
+    
+    server.on("error", (error) => {
+        console.log("App not able to connect with database",error);
+        throw error;
+    })
+    
+    server.listen(SOCKET_PORT,() => {
+        console.log(`Socket server is running at -> http://localhost:${SOCKET_PORT}`);
+    })
+} 
 
-io.on('connection',(socket) => {
-    console.log("A user connected:", socket.id);
-
-    socket.on("test-event", (data) => {
-        console.log("Received from client:", data);
-
-        // Send back response
-        socket.emit("server-response", { msg: "Hello from server!" });
-    });
-})
-
-export {server}
+export {setUpSocketIO}
