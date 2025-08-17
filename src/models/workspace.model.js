@@ -10,12 +10,12 @@ const workspaceSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    document: {
+        type: String,
+        required: true
+    },
     description: {
         type: String,
-    },
-    document: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Document"
     },
     members: [
         {
